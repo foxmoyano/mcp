@@ -1,0 +1,8 @@
+{
+    "protectedBranches": ["main", "master", "release/*"],
+    "allowForcePush": false,
+    "requireSignedCommits": false,
+    "maxFilesChanged": 500,
+    "conventionalCommits": true,
+    "defaultPullRebase": true
+}
