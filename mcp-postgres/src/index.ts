@@ -88,8 +88,6 @@ const server = new Server(
 // ========= Handlers =========
 
 server.setRequestHandler(ListToolsRequestSchema, async () => {
-  const readDataTool = new ReadDataTool();
-
   const tools = [
     {
       name: listTableTool.name,
@@ -152,25 +150,7 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
 
       let callArgs = (args || {}) as any;
 
-      // Compat: si viene tableName y NO query, construimos SELECT seguro
-      if (!callArgs.query && typeof callArgs.tableName === "string") {
-        const tn = callArgs.tableName as string;
-        const limit = Number.isFinite(callArgs.limit) && callArgs.limit > 0 ? Math.floor(callArgs.limit) : 100;
-
-        const parts = tn.split(".");
-        const quoteIdent = (id: string) => {
-          if (!/^[A-Za-z_][A-Za-z0-9_]*$/.test(id)) throw new Error(`Invalid identifier: ${id}`);
-          return `"${id}"`;
-        };
-        const quoted = parts.map(quoteIdent).join(".");
-        callArgs = { query: `SELECT * FROM ${quoted} LIMIT ${limit}` };
-      }
-
-      // Si eliges exigir SIEMPRE query a partir de aquí:
-      if (!callArgs.query || typeof callArgs.query !== "string") {
-        return { content: [{ type: "text", text: "Missing or invalid 'query' argument for read_data tool (must be a SELECT string)." }], isError: true };
-      }
-
+      // Simplemente pasar los args directamente al tool sin procesamiento duplicado
       const result = await readDataTool.run(callArgs);
       return { content: [{ type: "text", text: JSON.stringify(result, null, 2) }] };
     }
