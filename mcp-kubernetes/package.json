@@ -1,0 +1,28 @@
+{
+  "name": "mcp-k8s",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "clean": "shx rm -rf dist",
+    "build": "npm run clean && tsc -p tsconfig.json",
+    "start": "node dist/server.js",
+	"dev": "npm run build && node dist/server.js",
+	"test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "files": [
+    "dist"
+  ],
+  "devDependencies": {
+    "@types/mssql": "^9.1.7",
+    "@types/node": "^16.7.13",
+    "shx": "^0.3.4",
+    "typescript": "^4.9.5"
+  },
+  "dependencies": {
+    "@azure/identity": "^4.8.0",
+    "@modelcontextprotocol/sdk": "^1.0.0",
+    "dotenv": "^10.0.0",
+    "mssql": "^11.0.1"
+  },
+  "type": "module"
+}
